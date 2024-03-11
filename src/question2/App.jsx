@@ -3,39 +3,48 @@
 // Från början visas användarens nuvarande e-postadress.
 // Bredvid e-postadressen ska det finnas en "Redigera"-knapp.
 
-import { useState } from "react";
-
 // När "Redigera" klickas, visa ett inputfält för att skriva in en ny e-postadress
 // och byt "Redigera"-knappen till en "Spara"-knapp.
 // När "Spara" klickas, uppdatera e-postadressen och visa den uppdaterade adressen.
 
-function App() {
-  const [email, setEmail] = useState("david@chas.se");
-  const [edit, setEdit] = useState(false);
 
-  function renderEmail() {
+import { useState } from "react";
+function App() {
+  const [email, setEmail] = useState("default@mail.com")
+  const [edit, setEdit] = useState(false)
+ 
+
+  function editHandler(e) {
+    setEmail(e.target.value)
+  }
+
+  function buttonHandler() {
+    setEdit(!edit)
+  }
+
+  function theWholeThing() {
     if (edit) {
       return (
         <>
-          <input
-            type="text"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-          <button onClick={() => setEdit(!edit)}>Save</button>
+          <input type="text" value={email} onChange={editHandler}></input><button onClick={buttonHandler}>Save</button>
+          
         </>
       );
     } else {
+    
       return (
         <>
+          <input type="text" value={email}></input>
+          <button onClick={buttonHandler}>Edit</button>
           <p>{email}</p>
-          <button onClick={() => setEdit(!edit)}>Edit</button>
         </>
       );
     }
   }
 
-  return <div>{renderEmail()}</div>;
-}
+  return(
+  <div>{theWholeThing()}
+  </div>)
 
+}
 export default App;

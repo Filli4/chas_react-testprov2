@@ -3,7 +3,7 @@
 // hook i React, useFetchData, för att hämta data från
 //en angiven URL. Din hook ska enbart hantera datahämtning och laddningsstatus.
 
-import { useEffect, useState } from "react";
+
 
 // Skapa en custom hook som heter: useFetchData, som tar en URL som argument
 // och använder fetch för att hämta data.
@@ -13,48 +13,54 @@ import { useEffect, useState } from "react";
 // Använd https://jsonplaceholder.typicode.com/users som test-URL för att demonstrera
 // hur din hook kan användas i en komponent för att visa användardata och en
 // laddningsindikator.
-
-function useFetchData(url) {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(url);
-      const data = await response.json();
-      setData(data);
-      setIsLoading(false);
-    }
-
-    getData();
-  }, [url]);
-
-  return { data, isLoading };
-}
-
 // Exempel på användning:
 
-function UserList() {
-  const { data, isLoading } = useFetchData(
-    "https://jsonplaceholder.typicode.com/users"
-  );
+import { useEffect, useState } from "react";
 
-  if (isLoading) return <div>Laddar...</div>;
-  return (
-    <ul>
-      {data.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
-  );
+function useFetchData(URL) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  
+  useEffect(() =>{
+    async function getData() {
+      const response = await fetch(URL)
+      const data = await response.json()
+
+      setData(data)
+      setLoading(false)
+    }
+
+    
+    getData()
+  }, [URL]);
+  return { data, loading };
 }
 
-function App() {
+function UserList() {
+  const {data, loading} = useFetchData("https://jsonplaceholder.typicode.com/users")
+  
+  if (loading) return <div> Loading...</div>
+
+  return (
+    <ul>
+      {data.map((user) => {
+        return(
+        <li key={user.id}>
+          {user.username}
+        </li> );
+      })} 
+    </ul>
+  
+  )
+
+}
+
+export default function App() {
   return (
     <div>
-      <UserList />
+      <h1>can you see me</h1>
+    <UserList />
     </div>
   );
 }
 
-export default App;
